@@ -1,0 +1,48 @@
+<div class="modal fade" id="AddNewProd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Добавить продукт</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="text-align: left; padding: 10px;">
+                <form id="addProductForm" onsubmit="return false;">
+                    <p style="margin-bottom: 10px;">
+                        <label style="display: inline-block; width: 100px;">Название:</label>
+                        <input type="text" name="name" style="width: 200px;">
+                    </p>
+                    <p style="margin-bottom: 10px;">
+                        <label style="display: inline-block; width: 100px;">Описание:</label>
+                        <textarea name="description" rows="4" style="width: 200px;"></textarea>
+                    </p>
+                    <p style="margin-bottom: 10px;">
+                        <label style="display: inline-block; width: 100px;">Цена:</label>
+                        <input type="number" step="0.01" name="price" style="width: 200px;">
+                    </p>
+                    <div class="modal-footer mt-3" style="text-align: center;">
+                        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="addProduct()" style="width: 100px;">Добавить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function addProduct() {
+    var form = document.getElementById('addProductForm');
+    var formData = new FormData(form);
+
+    fetch('/add_product', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+}
+</script>

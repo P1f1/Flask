@@ -1,0 +1,32 @@
+<form method="post" action="{{ url_for('add_to_whs', product_id=product[7], quantity=product[4]) }}" class="location-form">
+    <button type="button" title="Добавить на склад" class="btn btn-success show-options">+</button>
+    <select name="location_id" class="location-options" style="display: none;">
+        <option value="-">Добавить на склад</option>
+        {% for location in all_location %}
+            <option value="{{ location[0] }}">{{ location[1] }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" title="Добавить на склад" class="btn btn-success submit-btn" style="display: none;">+</button>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var forms = document.querySelectorAll('.location-form');
+
+    forms.forEach(function(form) {
+        var showOptionsBtn = form.querySelector('.show-options');
+        var locationOptions = form.querySelector('.location-options');
+        var submitBtn = form.querySelector('.submit-btn');
+
+        showOptionsBtn.addEventListener('click', function() {
+            showOptionsBtn.style.display = 'none';
+            locationOptions.style.display = 'inline-block';
+            submitBtn.style.display = 'inline-block';
+        });
+
+        locationOptions.addEventListener('change', function() {
+            form.submit();
+        });
+    });
+});
+</script>

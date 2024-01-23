@@ -1,0 +1,5 @@
+{% if product[6] is not none %}
+    <form method="post" action="{{ url_for('del_from_whs', product_id=product[5], location_id=product[6], quantity=product[4]) }}">
+        <button type="submit" class="btn btn-danger" title="Удалить со склада">-</button>
+    </form>
+{% endif %}

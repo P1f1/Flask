@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link href="static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="static/icon/box-seam.svg">
+    <title>Данные о продуктах</title>
+</head>
+<body>
+    <header>
+        {% include 'navbar.html '%}
+    </header>
+
+    <main>
+        <h1 class="text-center text-muted">Данные о продуктах</h1>
+        
+        <div class="container">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Описание</th>
+                        <th>Цена</th>
+                        <th>Локация</th>
+                        <th>Количество</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in all_product %}
+                        <tr>
+                            <td>{{ product[0] }}</td>
+                            <td>{{ product[1] }}</td>
+                            <td>{{ product[2] }}</td>
+                            <td>
+                                {% if product[3] is not none %}
+                                    {{ product[3] }}
+                                {% else %}
+                                    {% include 'add_to_whs.html' %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="margin-right: 10px;">{{ product[4] }}</span>
+                                    <form action="{{ url_for('change_quantity', product_id=product[5], quantity=product[4], inventory_id=product[8]) }}" method="post">
+                                        <button type="button" title="Изменить кол-во" class="btn btn-info show-options" onclick="toggleInput({{ loop.index }})" id="editButton{{ loop.index }}">✏️</button>
+                                        <input type="number" name="new_value" value="{{ product[4] }}" style="display: none;" id="inputField{{ loop.index }}">
+                                        <button type="submit" class="btn btn-success" style="display: none;" id="submitButton{{ loop.index }}">Изменить</button>
+                                    </form>
+                                    <script>
+                                        function toggleInput(index) {
+                                            var inputField = document.getElementById('inputField' + index);
+                                            var submitButton = document.getElementById('submitButton' + index);
+                                            var editButton = document.getElementById('editButton' + index);
+
+                                            if (inputField.style.display === 'none' || inputField.style.display === '') {
+                                                inputField.style.display = 'inline-block';
+                                                submitButton.style.display = 'inline-block';
+                                                editButton.style.display = 'none';  // Скрыть кнопку после нажатия
+                                            } else {
+                                                inputField.style.display = 'none';
+                                                submitButton.style.display = 'none';
+                                                editButton.style.display = 'inline-block';  // Показать кнопку при скрытии полей ввода
+                                            }
+                                        }
+                                    </script>
+                                </div>
+                            </td>
+                            <td>
+                                {% include 'del_from_whs.html' %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+    </footer>
+
+    <!--Модальные окна-->
+        {% include 'modal_add_loc.html '%}
+        {% include 'modal_add_prod.html '%}
+
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
